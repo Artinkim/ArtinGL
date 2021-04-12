@@ -43,6 +43,6 @@ public class Vector3 {
 	}
 
 	public String toString() {
-		return "x:" + x + " y:" + y + " z:" + z;
+		return "x:" + (int) (100 * x) + " y:" + (int) (100 * y) + " z:" + (int) (100 * z);
 	}
 }

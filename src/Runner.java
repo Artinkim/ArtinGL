@@ -18,9 +18,6 @@ import utilities.ObjReader;
 
 public class Runner extends JPanel implements KeyListener {
 	static Vector3 pos;
-	static Vector3 l;
-	static Vector3 r;
-	static Vector3 k;
 
 	public Runner() {
 		this.addKeyListener(this);
@@ -53,12 +50,11 @@ public class Runner extends JPanel implements KeyListener {
 //		}
 //		render.clearBackBuffer();
 		Camera cam = new Camera();
-		pos = new Vector3(0, 0, -1.2f);
-		cam.viewMatrix.m[2][3] += 1.2;
+		cam.position = new Vector3(0, 0, 1.2f);
+		pos = new Vector3();
 		// cam.viewMatrix.m[2][2] += 1.2;
 		// cam.viewMatrix.m[1][2] += 0.1;
 		cam.setPerspective(179.0f, (800f / 500f), 0.001f, 1000.0f);
-
 		int mouseY = MouseInfo.getPointerInfo().getLocation().x;
 		int mouseX = MouseInfo.getPointerInfo().getLocation().y;
 		int x = mouseX;
@@ -80,25 +76,35 @@ public class Runner extends JPanel implements KeyListener {
 			// cam.viewMatrix.m[0][2] = a;
 			// cam.viewMatrix.m[1][2] = b;
 			// cam.viewMatrix.m[2][2] = c;
-			//cam.orientation = new Quaternion();
-			l = new Vector3(-cam.viewMatrix.m[0][0], -cam.viewMatrix.m[1][0], -cam.viewMatrix.m[2][0]);
-			r = new Vector3(cam.viewMatrix.m[0][1], cam.viewMatrix.m[1][1], cam.viewMatrix.m[2][1]);
-			k = new Vector3(cam.viewMatrix.m[0][2], cam.viewMatrix.m[1][2], cam.viewMatrix.m[2][2]);
-			cam.orientation.rotate(l, 0.001f * (-yaw));
-			cam.orientation.rotate(r, 0.001f * (pitch));
-//			cam.orientation.rotate(new Vector3(cam.viewMatrix.m[0][1], cam.viewMatrix.m[1][1], cam.viewMatrix.m[2][1]),
-//					0.001f * pitch);
-			//cam.orientation.normalize();
-			//System.out.println(cam.viewMatrix);
-			cam.viewMatrix = new Matrix4(1);
-			
-			//System.out.println(pos.z);
-			//pos.z += l.x / 100;
-			cam.move(pos);
-			cam.viewMatrix = Matrix4.multiply(cam.viewMatrix, cam.orientation.toMatrix4());
-			System.out.println(cam.viewMatrix);
-			//cam.viewMatrix.m[1][3] += 0.001;
+			// cam.orientation = new Quaternion();
+			// System.out.println(pos.x + " " + pos.y + " " + pos.z);
+			cam.updateView(0.001f * yaw, 0.001f * pitch, 0, pos);
+//			System.out.println(cam.forwardVec);
+//			System.out.println(cam.upVec);
+//			System.out.println(cam.leftVec);
+			pos = new Vector3();
+//			l = new Vector3(cam.viewMatrix.m[0][0], cam.viewMatrix.m[1][0], cam.viewMatrix.m[2][0]);
+//			r = new Vector3(cam.viewMatrix.m[0][1], cam.viewMatrix.m[1][1], cam.viewMatrix.m[2][1]);
+//			k = new Vector3(cam.viewMatrix.m[0][2], cam.viewMatrix.m[1][2], cam.viewMatrix.m[2][2]);
+//			cam.orientation.rotate(l, 0.001f * (-yaw));
+//			cam.orientation.rotate(r, 0.001f * (pitch));
+////			cam.orientation.rotate(new Vector3(cam.viewMatrix.m[0][1], cam.viewMatrix.m[1][1], cam.viewMatrix.m[2][1]),
+////					0.001f * pitch);
+//			// cam.orientation.normalize();
+//			// System.out.println(cam.viewMatrix);
+//			cam.viewMatrix = new Matrix4(1);
+//
+//			// System.out.println(pos.z);
+//			// pos.z += l.x / 100;
+//
+//			cam.viewMatrix = Matrix4.multiply(cam.viewMatrix, cam.orientation.toMatrix4());
+//			cam.move(pos);
+			// System.out.println(cam.viewMatrix);
+			// cam.viewMatrix.m[1][3] += 0.001;
+
 			render.renderVertecies3D(arr, cam);
+			// render.renderTriangle3D(new Vector3(1,1,-40),new Vector3(0,0,1),new
+			// Vector3(2,0,1),cam);
 			render.swapBuffers();
 
 			render.clearBackBuffer();
@@ -149,26 +155,18 @@ public class Runner extends JPanel implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
-		System.out.println(KeyEvent.VK_RIGHT + " " + key);
-		if (key == KeyEvent.VK_RIGHT) {
-			pos.x += l.x / 100;
-			pos.y += l.y / 100;
-			pos.z += l.z / 100;
-		}
+		// System.out.println(KeyEvent.VK_RIGHT + " " + key);
 		if (key == KeyEvent.VK_LEFT) {
-			pos.x -= l.x / 100;
-			pos.y -= l.y / 100;
-			pos.z -= l.z / 100;
+			pos.x = -0.01f;
+		}
+		if (key == KeyEvent.VK_RIGHT) {
+			pos.x = 0.01f;
 		}
 		if (key == KeyEvent.VK_DOWN) {
-			pos.x -= k.x / 100;
-			pos.y -= k.y / 100;
-			pos.z -= k.z / 100;
+			pos.z = 0.01f;
 		}
 		if (key == KeyEvent.VK_UP) {
-			pos.x += k.x / 100;
-			pos.y += k.y / 100;
-			pos.z += k.z / 100;
+			pos.z = -0.01f;
 		}
 	}
 

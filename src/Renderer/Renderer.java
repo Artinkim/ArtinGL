@@ -54,7 +54,7 @@ public class Renderer {
 	}
 
 	public void renderVertecies3D(ArrayList<Vector3> arr, Camera cam) {
-		
+
 		for (int i = 0; i < arr.size(); i += 3) {
 			renderTriangle3D(arr.get(i), arr.get(i + 1), arr.get(i + 2), cam);
 		}
@@ -196,11 +196,12 @@ public class Renderer {
 	}
 
 	public void renderTriangle3D(Vector3 vec1, Vector3 vec2, Vector3 vec3, Camera cam) {
-		Vector4 vec1V4 = new Vector4(vec1.x, vec1.y, vec1.z, 1.0f);
-		Vector4 vec2V4 = new Vector4(vec2.x, vec2.y, vec2.z, 1.0f);
-		Vector4 vec3V4 = new Vector4(vec3.x, vec3.y, vec3.z, 1.0f);
+		Vector4 vec1V4 = new Vector4(vec1.x, vec1.y, vec1.z*30, 1.0f);
+		Vector4 vec2V4 = new Vector4(vec2.x, vec2.y, vec2.z*30, 1.0f);
+		Vector4 vec3V4 = new Vector4(vec3.x, vec3.y, vec3.z*30, 1.0f);
 		Matrix4 projView = Matrix4.multiply(cam.projectionMatrix, cam.viewMatrix);
-
+		//System.out.println(vec1.z);
+		//System.out.println(projView);
 //		System.out.println(vec1V4);
 //		System.out.println(cam.viewMatrix.m[2][3]);
 //		for (int i = 0; i < 4; i++) {
@@ -233,8 +234,8 @@ public class Renderer {
 			renderTriangle2D(new Vector2(vec1Final.x / vec1Final.z, vec1Final.y / vec1Final.z),
 					new Vector2(vec2Final.x / vec2Final.z, vec2Final.y / vec2Final.z),
 					new Vector2(vec3Final.x / vec3Final.z, vec3Final.y / vec3Final.z));
-//			renderTriangle2D(new Vector2(vec1Final.x, vec1Final.y), new Vector2(vec2Final.x, vec2Final.y),
-//					new Vector2(vec3Final.x, vec3Final.y));
+//			renderTriangle2D(new Vector2(vec1Final.x*vec1Final.z, vec1Final.y*vec1Final.z), new Vector2(vec2Final.x*vec2Final.z, vec2Final.y*vec2Final.z),
+//					new Vector2(vec3Final.x*vec3Final.z, vec3Final.y*vec3Final.z));
 		}
 	}
 
