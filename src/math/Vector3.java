@@ -15,6 +15,29 @@ public class Vector3 {
 		this.z = z;
 	}
 
+	public Vector3(Vector4 vec) {
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
+	}
+
+	public float length() {
+		return (float) Math.sqrt(x * x + y * y + z * z);
+	}
+
+	public void normalize() {
+		float l = length();
+		if (l != 0) {
+			this.x /= l;
+			this.y /= l;
+			this.z /= l;
+		} else {
+			this.x = 0;
+			this.y = 0;
+			this.z = 0;
+		}
+	}
+
 	public static float length(Vector3 v1, Vector3 v2) {
 		float d1 = v2.x - v1.x;
 		float d2 = v2.y - v1.y;

@@ -28,11 +28,12 @@ public class Renderer {
 
 	JFrame frame;
 	JLabel label;
+	public static Vector4 color;
 
 	public Renderer(int width, int height) {
 		this.width = width;
 		this.height = height;
-
+		color = new Vector4(0.5f, 0f, 0.5f, 1f);
 		frontBuffer = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 		frame = new JFrame("ArtinGraphics");
 		label = new JLabel();
@@ -200,8 +201,8 @@ public class Renderer {
 		Vector4 vec2V4 = new Vector4(vec2.x, vec2.y, vec2.z*30, 1.0f);
 		Vector4 vec3V4 = new Vector4(vec3.x, vec3.y, vec3.z*30, 1.0f);
 		Matrix4 projView = Matrix4.multiply(cam.projectionMatrix, cam.viewMatrix);
-		//System.out.println(vec1.z);
-		//System.out.println(projView);
+		// System.out.println(vec1.z);
+		// System.out.println(projView);
 //		System.out.println(vec1V4);
 //		System.out.println(cam.viewMatrix.m[2][3]);
 //		for (int i = 0; i < 4; i++) {
@@ -228,6 +229,49 @@ public class Renderer {
 		Vector4 vec1Final = Matrix4.multiply(projView, vec1V4);
 		Vector4 vec2Final = Matrix4.multiply(projView, vec2V4);
 		Vector4 vec3Final = Matrix4.multiply(projView, vec3V4);
+//		System.out.println(vec1Final);
+		if (vec1Final.z > 0.0001f && vec1Final.z < 1000.0f && vec2Final.z > 0.0001f && vec2Final.z < 1000.0f
+				&& vec3Final.z > 0.0001f && vec3Final.z < 1000.0f) {
+			renderTriangle2D(new Vector2(vec1Final.x / vec1Final.z, vec1Final.y / vec1Final.z),
+					new Vector2(vec2Final.x / vec2Final.z, vec2Final.y / vec2Final.z),
+					new Vector2(vec3Final.x / vec3Final.z, vec3Final.y / vec3Final.z));
+//			renderTriangle2D(new Vector2(vec1Final.x*vec1Final.z, vec1Final.y*vec1Final.z), new Vector2(vec2Final.x*vec2Final.z, vec2Final.y*vec2Final.z),
+//					new Vector2(vec3Final.x*vec3Final.z, vec3Final.y*vec3Final.z));
+		}
+	}
+	public void renderTriangle3D2(Vector3 vec1, Vector3 vec2, Vector3 vec3, Camera cam) {
+		Vector4 vec1Final = new Vector4(vec1.x, vec1.y, vec1.z * 30, 1.0f);
+		Vector4 vec2Final = new Vector4(vec2.x, vec2.y, vec2.z * 30, 1.0f);
+		Vector4 vec3Final = new Vector4(vec3.x, vec3.y, vec3.z * 30, 1.0f);
+		//Matrix4 projView = Matrix4.multiply(cam.projectionMatrix, cam.viewMatrix);
+		// System.out.println(vec1.z);
+		// System.out.println(projView);
+//		System.out.println(vec1V4);
+//		System.out.println(cam.viewMatrix.m[2][3]);
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 4; j++) {
+//				System.out.print(cam.viewMatrix.m[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 4; j++) {
+//				System.out.print(cam.projectionMatrix.m[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+//		System.out.println();
+//		
+//		for (int i = 0; i < 4; i++) {
+//			for (int j = 0; j < 4; j++) {
+//				System.out.print(projView.m[i][j] + " ");
+//			}
+//			System.out.println();
+//		}
+		 vec1Final = Matrix4.multiply(cam.projectionMatrix, vec1Final);
+		vec2Final = Matrix4.multiply(cam.projectionMatrix, vec2Final);
+		vec3Final = Matrix4.multiply(cam.projectionMatrix, vec3Final);
 //		System.out.println(vec1Final);
 		if (vec1Final.z > 0.0001f && vec1Final.z < 1000.0f && vec2Final.z > 0.0001f && vec2Final.z < 1000.0f
 				&& vec3Final.z > 0.0001f && vec3Final.z < 1000.0f) {
@@ -265,7 +309,7 @@ public class Renderer {
 	public void renderPixel(int x, int y) {
 		if (x < 0 || y < 0 || x >= width || y >= height)
 			return;
-		Vector4 color = new Vector4(0.5f, 0f, 0.5f, 1f);
+		// Vector4 color = new Vector4(0.5f, 0f, 0.5f, 1f);
 		// Vector4 color = new Vector4((float) Math.random(), (float) Math.random(),
 		// (float) Math.random(), 1f);
 		int index = (y * bytesPerRow) + (x * BYTES_PER_PIXEL);

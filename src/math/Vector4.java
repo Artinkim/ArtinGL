@@ -10,6 +10,13 @@ public class Vector4 {
 		this(0, 0, 0, 0);
 	}
 
+	public Vector4(Vector3 vec) {
+		this.x = vec.x;
+		this.y = vec.y;
+		this.z = vec.z;
+		this.w = 1.0f;
+	}
+
 	public Vector4(float x, float y, float z, float w) {
 		this.x = x;
 		this.y = y;
